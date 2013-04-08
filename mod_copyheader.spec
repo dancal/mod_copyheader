@@ -1,50 +1,40 @@
-%define		mod_name	copyheader
-%define 	apxs		/usr/sbin/apxs
-Summary:	Apache module:
-Name:		mod_%{mod_name}
-Version:	0.1
-Release:	0.1
-License:	Apache
-Group:		Networking/Daemons/HTTP
-Source0:	http://117.52.90.7/repo/mod_copyheader-%{version}.tar.gz
-Source1:	mod_copyheader.conf
-URL:		http://www.widerplanet.com
-BuildRequires:	%{apxs}
-BuildRequires:	httpd >= 2.2.0
-Requires:	apache(modules-api) = %apache_modules_api
-BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
-
-%define		_pkglibdir	%(%{apxs} -q LIBEXECDIR 2>/dev/null)
-%define		_sysconfdir	%(%{apxs} -q SYSCONFDIR 2>/dev/null)
+Summary: mod_copyheader is Apache 2.2 module for copy response header to note
+Name: mod_copyheader
+Version: 0.1
+Release: 0.1.wp
+License: Apache
+Group: System Environment/Daemons
+URL: https://www.widerplanet.com
+Source0: %{name}-%{version}.tar.gz
+BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-root
+BuildRequires: httpd-devel
+Requires: httpd httpd-devel
 
 %description
-mod_copy_header is Apache 2.2 module for copy response header to note
+mod_copyheader is Apache 2.2 module for copy response header to note
 
 %prep
-%setup -q -n mod_%{mod_name}-%{version}
+%setup -q
 
 %build
-%{apxs} -c mod_%{mod_name}.c -o mod_%{mod_name}.so
+make copyheader
 
 %install
 rm -rf $RPM_BUILD_ROOT
-install -d $RPM_BUILD_ROOT{%{_pkglibdir},%{_sysconfdir}/conf.d}
-install -p mod_%{mod_name}.so $RPM_BUILD_ROOT%{_pkglibdir}
-cp -a %{SOURCE1} $RPM_BUILD_ROOT%{_sysconfdir}/conf.d/mod_%{mod_name}.conf
+install -m0755 -d $RPM_BUILD_ROOT$(apxs -q LIBEXECDIR)
+make DESTDIR=$RPM_BUILD_ROOT install
+install -m0644 -D mod_copyheader.conf $RPM_BUILD_ROOT/etc/httpd/conf.d/mod_copyheader.conf
 
 %clean
 rm -rf $RPM_BUILD_ROOT
 
-%post
-%service apache restart
-
-%postun
-if [ "$1" = "0" ]; then
-	%service -q apache restart
-fi
-
 %files
-%defattr(644,root,root,755)
-%doc README
-%attr(640,root,root) %config(noreplace) %verify(not md5 mtime size) %{_sysconfdir}/conf.d/mod_%{mod_name}.conf
-%attr(755,root,root) %{_pkglibdir}/*
+%defattr(-,root,root,-)
+%{_libdir}/httpd/modules/mod_copyheader.so
+%config(noreplace) %{_sysconfdir}/httpd/conf.d/mod_copyheader.conf
+
+%post
+/usr/sbin/apxs -e -A -n mod_copyheader $(apxs -q LIBEXECDIR)/mod_copyheader.so
+
+%preun
+/usr/sbin/apxs -e -A -n mod_copyheader $(apxs -q LIBEXECDIR)/mod_copyheader.so
