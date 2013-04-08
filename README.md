@@ -36,7 +36,7 @@ Example
         CopyHeader X-Test
       </IfModule>
       Header unset X-Test
-      LogFormat "... %{X-Testn}" xtest
+      LogFormat "... %{X-Test}n" xtest
       CustomLog "logs/access_log" xtest
     </Location>
 
