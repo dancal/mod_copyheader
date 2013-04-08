@@ -1,17 +1,16 @@
 %define		mod_name	copyheader
-%define 	apxs		/usr/bin/apxs
-Summary:	Apache module: Limit simultaneous connections by an IP address
+%define 	apxs		/usr/sbin/apxs
+Summary:	Apache module:
 Name:		mod_%{mod_name}
-Version:	0.01
+Version:	0.1
 Release:	0.1
 License:	Apache
 Group:		Networking/Daemons/HTTP
-Source0:	http://dominia.org/djao/limit/mod_limitipconn-%{version}.tar.gz
+Source0:	http://117.52.90.7/repo/mod_copyheader-%{version}.tar.gz
 Source1:	mod_copyheader.conf
 URL:		http://www.widerplanet.com
 BuildRequires:	%{apxs}
-BuildRequires:	apache-devel >= 2.0.0
-BuildRequires:	rpmbuild(macros) >= 1.268
+BuildRequires:	httpd >= 2.2.0
 Requires:	apache(modules-api) = %apache_modules_api
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
