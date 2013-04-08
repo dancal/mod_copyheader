@@ -17,4 +17,4 @@ install: mod_copyheader.so
 	$(APXS) -i -S LIBEXECDIR=$(DESTDIR)$$($(APXS) -q LIBEXECDIR)/ -n mod_copyheader.so mod_copyheader.la
 
 clean:
-	rm -rf *~ *.o *.so *.lo *.la *.slo *.loT .libs/
+	rm -rf *~ *.o *.so *.lo *.la *.slo *.loT *.list .libs/
