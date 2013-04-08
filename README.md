@@ -31,9 +31,11 @@ Example
 	LogFormat "... \"%{WPLogResult}n\"" combined
 
 	<?php
+		#아파치 로그에는 결과가 저장되지만, 사용자 브라우져로는 전송되지 않는다.
 		header("WPLogResult: test");
 	?>
 
+	
 COPYRIGHT & LICENSE
 ================
 
