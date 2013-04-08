@@ -30,11 +30,10 @@ Example
 
 	LogFormat "... \"%{WPLogResult}n\"" combined
 
-{{{php
 	<?php
 		header("WPLogResult: test");
 	?>
-}}}
+
 COPYRIGHT & LICENSE
 ================
 
