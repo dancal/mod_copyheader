@@ -26,8 +26,17 @@ DOCUMENTATION
 
 Example
 ----------------
-	/etc/httpd/conf/httpd.conf
+	apache config
+	/etc/httpd/conf.d/mod_copyheader.conf
+	LoadModule copyheader_module modules/mod_copyheader.so
+	<IfModule copyheader_module>
+		CopyHeaderActive On
+		CopyHeader WPLogResult
+	</IfModule>
+	Header unset WPLogResult
 
+----------------
+	/etc/httpd/conf/httpd.conf
 	LogFormat "... \"%{WPLogResult}n\"" combined
 
 	<?php
